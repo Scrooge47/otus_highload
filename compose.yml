@@ -1,15 +1,14 @@
 version: '3.8'
 services:
   database:
-    image: mysql/mysql-server:8.0
-    container_name: 'social_db'
+    image: postgres:14-alpine
+    container_name: social_db_postgres
     ports:
-      - "3306:3306"
+      - "5443:5432"
     environment:
-      MYSQL_DATABASE: 'social'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      - POSTGRES_DB=social
+      - POSTGRES_NAME=postgres
+      - POSTGRES_PASSWORD=password
 
   social:
     image: social:latest
@@ -23,6 +22,16 @@ services:
       - "8080:8080"
     environment:
       - DATABASE_HOST=database
+
+  database_test:
+      image: postgres:14-alpine
+      container_name: social_db_test_postgres
+      ports:
+        - "5444:5432"
+      environment:
+        - POSTGRES_DB=social_test
+        - POSTGRES_NAME=postgres
+        - POSTGRES_PASSWORD=password
 
 
 

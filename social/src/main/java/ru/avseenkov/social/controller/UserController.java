@@ -28,4 +28,9 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDto> findUser(@RequestParam String first_name, @RequestParam String last_name) {
+        return userService.findUserByFirstNameAndLastName(first_name, last_name);
+    }
 }

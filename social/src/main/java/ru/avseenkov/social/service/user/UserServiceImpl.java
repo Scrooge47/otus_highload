@@ -46,4 +46,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<User> users = userRepository.getUsers();
         return UserMapper.mapToUserDto(users);
     }
+
+    @Override
+    public List<UserDto> findUserByFirstNameAndLastName(String first_name, String last_name) {
+        List<User> users = userRepository.findUserByFistNameAndLastName(first_name, last_name);
+        return UserMapper.mapToUserDto(users);
+    }
 }

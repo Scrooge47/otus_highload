@@ -15,4 +15,6 @@ public interface UserRepository {
     User getUserFromDb(Long id);
 
     List<User> getUsers();
+
+    List<User> findUserByFistNameAndLastName(String first_name, String last_name);
 }

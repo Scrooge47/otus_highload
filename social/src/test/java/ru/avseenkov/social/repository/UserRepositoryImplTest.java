@@ -10,6 +10,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import ru.avseenkov.social.model.User;
 
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -50,4 +54,39 @@ class UserRepositoryImplTest {
         Assertions.assertEquals(user.getPassword(), savedUser.getPassword());
 
     }
+
+    @Test
+    void findByFistNameAndLastName() {
+        User user1 = new User();
+        user1.setUsername("username1");
+        user1.setPassword("password");
+        user1.setFirstName("name");
+        user1.setLastName("surname");
+
+        User userDb = userRepository.save(user);
+        User userDb1 = userRepository.save(user1);
+
+        List<User> users = userRepository.findUserByFistNameAndLastName("name", "sur");
+
+        assertThat(users, hasSize(2));
+
+    }
+
+    @Test
+    void findByFistNameAndLastNameNoResult() {
+        User user1 = new User();
+        user1.setUsername("username1");
+        user1.setPassword("password");
+        user1.setFirstName("name");
+        user1.setLastName("surname");
+
+        User userDb = userRepository.save(user);
+        User userDb1 = userRepository.save(user1);
+
+        List<User> users = userRepository.findUserByFistNameAndLastName("abramov", "sur");
+
+        assertThat(users, hasSize(0));
+
+    }
+
 }

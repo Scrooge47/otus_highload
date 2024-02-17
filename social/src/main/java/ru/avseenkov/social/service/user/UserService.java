@@ -11,4 +11,6 @@ public interface UserService {
     UserDetails loadUserByUsername(String username);
 
     List<UserDto> getUsers();
+
+    List<UserDto> findUserByFirstNameAndLastName(String first_name, String last_name);
 }

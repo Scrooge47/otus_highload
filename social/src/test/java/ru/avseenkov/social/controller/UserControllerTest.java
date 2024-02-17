@@ -21,6 +21,9 @@ import ru.avseenkov.social.dto.UserDto;
 import ru.avseenkov.social.model.User;
 import ru.avseenkov.social.service.user.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,5 +72,19 @@ class UserControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(userDto)));
+    }
+
+    @Test
+    @WithMockUser
+    void getUsersByFirstNameAndLastName() throws Exception {
+        List<UserDto> users = new ArrayList<>();
+        users.add(userDto);
+        Mockito.when(userService.findUserByFirstNameAndLastName(Mockito.anyString(), Mockito.anyString())).thenReturn(users);
+        mvc.perform(MockMvcRequestBuilders.get("/user/search")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .param("first_name", "test")
+                        .param("last_name", "test"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(mapper.writeValueAsString(users)));
     }
 }

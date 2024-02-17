@@ -41,8 +41,8 @@ public class UserRepositoryImpl implements UserRepository {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
-            ps.setString(3, user.getFirstName());
-            ps.setString(4, user.getLastName());
+            ps.setString(3, user.getFirstName().toUpperCase());
+            ps.setString(4, user.getLastName().toUpperCase());
             ps.setByte(5, user.getAge());
             ps.setByte(6, user.getGender());
             ps.setString(7, user.getInterest());
@@ -65,5 +65,11 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getUsers() {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+    }
+
+    @Override
+    public List<User> findUserByFistNameAndLastName(String first_name, String last_name) {
+        String sql = "SELECT * FROM users WHERE first_name LIKE ? AND last_name LIKE ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), first_name.toUpperCase() + "%", last_name.toUpperCase() + "%");
     }
 }
