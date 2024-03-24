@@ -1,10 +1,26 @@
 version: '3.8'
+name: otus_social
 services:
-  database:
+  database_01:
     image: postgres:14-alpine
-    container_name: social_db_postgres
+    container_name: social_db_postgres_01
+    volumes:
+      - db-data-02:/var/lib/postgresql/database_02
+      - db-data-03:/var/lib/postgresql/database_03
     ports:
       - "5443:5432"
+    environment:
+      - POSTGRES_DB=social
+      - POSTGRES_NAME=postgres
+      - POSTGRES_PASSWORD=password
+
+  database_02:
+    image: postgres:14-alpine
+    container_name: social_db_postgres_02
+    volumes:
+      - db-data-02:/var/lib/postgresql/data
+    ports:
+      - "5444:5432"
     environment:
       - POSTGRES_DB=social
       - POSTGRES_NAME=postgres
@@ -17,21 +33,23 @@ services:
       context: ./social
       dockerfile: Dockerfile
     depends_on:
-      - database
+      - database_01
     ports:
       - "8080:8080"
     environment:
       - DATABASE_HOST=database
 
   database_test:
-      image: postgres:14-alpine
-      container_name: social_db_test_postgres
-      ports:
-        - "5444:5432"
-      environment:
-        - POSTGRES_DB=social_test
-        - POSTGRES_NAME=postgres
-        - POSTGRES_PASSWORD=password
-
+    image: postgres:14-alpine
+    container_name: social_db_test_postgres
+    ports:
+      - "5444:5432"
+    environment:
+      - POSTGRES_DB=social_test
+      - POSTGRES_NAME=postgres
+      - POSTGRES_PASSWORD=password
+volumes:
+  db-data-02:
+  db-data-03:
 
 

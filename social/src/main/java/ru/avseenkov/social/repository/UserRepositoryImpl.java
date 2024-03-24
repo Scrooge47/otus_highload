@@ -1,6 +1,6 @@
 package ru.avseenkov.social.repository;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,10 +14,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate02;
+
+    public UserRepositoryImpl(@Qualifier("base01JdbcTemplate") JdbcTemplate jdbcTemplate,
+                              @Qualifier("base02JdbcTemplate") JdbcTemplate jdbcTemplate02) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.jdbcTemplate02 = jdbcTemplate02;
+    }
 
     @Override
     public Optional<User> findById(Long id) {
@@ -70,6 +76,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> findUserByFistNameAndLastName(String first_name, String last_name) {
         String sql = "SELECT * FROM users WHERE first_name LIKE ? AND last_name LIKE ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), first_name.toUpperCase() + "%", last_name.toUpperCase() + "%");
+        return jdbcTemplate02.query(sql, new BeanPropertyRowMapper<>(User.class), first_name.toUpperCase() + "%", last_name.toUpperCase() + "%");
     }
 }

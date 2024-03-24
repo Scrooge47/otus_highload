@@ -1,6 +1,7 @@
 package ru.avseenkov.social.bootstrap;
 
 import com.github.javafaker.Faker;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -19,13 +20,13 @@ import java.util.Locale;
 public class DataLoader {
 
     @Bean
-    public CommandLineRunner loadDataUser(JdbcTemplate jdbcTemplate) {
+    public CommandLineRunner loadDataUser(@Qualifier("base01JdbcTemplate") JdbcTemplate jdbcTemplate) {
         return args -> {
             Faker faker = new Faker(new Locale("ru-RU"));
             Faker fakerEn = new Faker(new Locale("en-En"));
             List<User> users = new ArrayList<>();
             User user;
-            for (int i = 0; i < 1_000_000; i++) {
+            for (int i = 0; i < 2_000_000; i++) {
                 user = new User();
                 user.setFirstName(faker.name().firstName());
                 user.setLastName(faker.name().lastName());
