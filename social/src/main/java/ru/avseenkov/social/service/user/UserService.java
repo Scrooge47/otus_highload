@@ -13,4 +13,8 @@ public interface UserService {
     List<UserDto> getUsers();
 
     List<UserDto> findUserByFirstNameAndLastName(String first_name, String last_name);
+
+    void addFriend(Long userId, Long userRequestedId);
+
+    void deleteFriend(Long userId, Long userRequestedId);
 }

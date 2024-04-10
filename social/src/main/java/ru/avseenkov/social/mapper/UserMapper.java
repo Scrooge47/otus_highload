@@ -34,11 +34,11 @@ public class UserMapper {
     }
 
     public static List<UserDto> mapToUserDto(Iterable<User> users) {
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserDto> usersDto = new ArrayList<>();
         for (User user : users) {
-            userDtos.add(userDtoFromUser(user));
+            usersDto.add(userDtoFromUser(user));
         }
-        return userDtos;
+        return usersDto;
     }
 
 }

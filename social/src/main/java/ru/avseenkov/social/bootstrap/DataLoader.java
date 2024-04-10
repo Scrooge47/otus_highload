@@ -39,14 +39,6 @@ public class DataLoader {
 
             String insert = "INSERT INTO users (username, first_name, last_name, age, password, gender) VALUES(?, ?, ?, ?, ?, ?)";
 
-//            jdbcTemplate.batchUpdate(insert, users, 100000, (ps, user1) -> {
-//                ps.setString(1, user1.getUsername());
-//                ps.setString(2, user1.getFirstName());
-//                ps.setString(3, user1.getLastName());
-//                ps.setByte(4, user1.getAge());
-//                ps.setString(5, user1.getPassword());
-//            });
-
             PreparedStatement ps = jdbcTemplate.getDataSource().getConnection().prepareStatement(insert);
 
             for (User user1 : users) {

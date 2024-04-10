@@ -11,7 +11,7 @@ import ru.avseenkov.social.dto.LoginRequest;
 import ru.avseenkov.social.dto.RegisterRequest;
 import ru.avseenkov.social.mapper.UserMapper;
 import ru.avseenkov.social.model.User;
-import ru.avseenkov.social.repository.UserRepository;
+import ru.avseenkov.social.repository.user.UserRepository;
 
 @Service
 @AllArgsConstructor

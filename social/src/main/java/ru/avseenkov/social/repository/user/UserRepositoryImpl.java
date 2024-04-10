@@ -1,4 +1,4 @@
-package ru.avseenkov.social.repository;
+package ru.avseenkov.social.repository.user;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -76,6 +76,24 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> findUserByFistNameAndLastName(String first_name, String last_name) {
         String sql = "SELECT * FROM users WHERE first_name LIKE ? AND last_name LIKE ?";
-        return jdbcTemplate02.query(sql, new BeanPropertyRowMapper<>(User.class), first_name.toUpperCase() + "%", last_name.toUpperCase() + "%");
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), first_name.toUpperCase() + "%", last_name.toUpperCase() + "%");
+    }
+
+    @Override
+    public void addFriend(Long userId, Long userRequestedId) {
+        String sql = "INSERT INTO friends (friend_1, friend_2) VALUES(?, ?)";
+        jdbcTemplate.update(sql, userId, userRequestedId);
+    }
+
+    @Override
+    public void removeFriend(Long userId, Long userRequestedId) {
+        String sql = "INSERT INTO friends WHERE friend_1 = ? AND friend_2 = ?";
+        jdbcTemplate.update(sql, userId, userRequestedId);
+    }
+
+    @Override
+    public List<User> getFriends(Long userId) {
+        String sql = "SELECT u.id, u.username, u.first_name, u.first_name, u.last_name FROM friends as f INNER JOIN users as u ON f.friend_1 = u.id WHERE f.friend_2 = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), userId);
     }
 }

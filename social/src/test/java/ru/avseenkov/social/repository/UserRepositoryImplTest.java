@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import ru.avseenkov.social.model.User;
+import ru.avseenkov.social.repository.user.UserRepositoryImpl;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ class UserRepositoryImplTest {
     void findById() {
         User userDb = userRepository.save(user);
         User savedUser = userRepository.findById(userDb.getId()).get();
-        Assertions.assertEquals(user.getLastName(), savedUser.getLastName());
+        Assertions.assertEquals(user.getLastName().toUpperCase(), savedUser.getLastName());
         Assertions.assertEquals(user.getId(), savedUser.getId());
         Assertions.assertEquals(user.getPassword(), savedUser.getPassword());
 

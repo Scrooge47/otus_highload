@@ -1,4 +1,4 @@
-package ru.avseenkov.social.repository;
+package ru.avseenkov.social.repository.user;
 
 import ru.avseenkov.social.model.User;
 
@@ -17,4 +17,10 @@ public interface UserRepository {
     List<User> getUsers();
 
     List<User> findUserByFistNameAndLastName(String first_name, String last_name);
+
+    void addFriend(Long userId, Long userRequestedId);
+
+    void removeFriend(Long userId, Long userRequestedId);
+
+    List<User> getFriends(Long userId);
 }

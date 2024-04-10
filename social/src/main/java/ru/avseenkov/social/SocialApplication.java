@@ -8,6 +8,8 @@ public class SocialApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SocialApplication.class, args);
+
+
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import ru.avseenkov.social.dto.ApiError;
+import ru.avseenkov.social.exception.ConflictException;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -39,6 +40,16 @@ public class ErrorHandler {
         apiError.setMessage(e.getMessage());
         apiError.setRequest_id(request.getHeader("X-Request-Id"));
         return new ResponseEntity<>(apiError, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ApiError> handleConflict(Exception e, WebRequest request) {
+        ApiError apiError = new ApiError();
+        apiError.setMessage(e.getMessage());
+        apiError.setCode(HttpStatus.CONFLICT.value());
+        apiError.setRequest_id(request.getHeader("X-Request-Id"));
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
 }

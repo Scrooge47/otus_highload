@@ -4,9 +4,6 @@ services:
   database_01:
     image: postgres:14-alpine
     container_name: social_db_postgres_01
-    volumes:
-      - db-data-02:/var/lib/postgresql/database_02
-      - db-data-03:/var/lib/postgresql/database_03
     ports:
       - "5443:5432"
     environment:
@@ -14,17 +11,17 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_PASSWORD=password
 
-  database_02:
-    image: postgres:14-alpine
-    container_name: social_db_postgres_02
-    volumes:
-      - db-data-02:/var/lib/postgresql/data
-    ports:
-      - "5444:5432"
-    environment:
-      - POSTGRES_DB=social
-      - POSTGRES_NAME=postgres
-      - POSTGRES_PASSWORD=password
+#  database_02:
+#    image: postgres:14-alpine
+#    container_name: social_db_postgres_02
+#    volumes:
+#      - db-data-02:/var/lib/postgresql/data
+#    ports:
+#      - "5444:5432"
+#    environment:
+#      - POSTGRES_DB=social
+#      - POSTGRES_NAME=postgres
+#      - POSTGRES_PASSWORD=password
 
   social:
     image: social:latest
@@ -34,20 +31,48 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - database_01
+      - redis-server
+    links:
+      - redis-server
     ports:
       - "8080:8080"
-    environment:
-      - DATABASE_HOST=database
 
-  database_test:
-    image: postgres:14-alpine
-    container_name: social_db_test_postgres
-    ports:
-      - "5444:5432"
     environment:
-      - POSTGRES_DB=social_test
-      - POSTGRES_NAME=postgres
-      - POSTGRES_PASSWORD=password
+      - DATABASE_HOST_01=database_01
+      - DATABASE_HOST_PORT_01=5432
+      - DATABASE_HOST_02=database_02
+      - REDIS_HOST=redis
+
+  redis-server:
+      image: redis:latest
+      container_name: redis
+      restart: always
+      hostname: redis
+      ports:
+        - "6379:6379"
+      environment:
+        - REDIS_PASSWORD=password
+        - REDIS_PORT=6379
+
+#  redis_test:
+#      image: redis:latest
+#      restart: always
+#      ports:
+#        - "6380:6379"
+#      environment:
+#        - REDIS_PASSWORD=password
+#        - REDIS_PORT=6379
+#        - REDIS_DATABASE=16
+
+#  database_test:
+#    image: postgres:14-alpine
+#    container_name: social_db_test_postgres
+#    ports:
+#      - "5444:5432"
+#    environment:
+#      - POSTGRES_DB=social_test
+#      - POSTGRES_NAME=postgres
+#      - POSTGRES_PASSWORD=password
 volumes:
   db-data-02:
   db-data-03:

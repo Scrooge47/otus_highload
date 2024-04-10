@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
 
     @Bean
+    @Primary
     @ConfigurationProperties("spring.datasource.base01")
     public DataSourceProperties base01DataSourceProperties() {
         return new DataSourceProperties();
