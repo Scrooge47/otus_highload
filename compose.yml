@@ -54,6 +54,13 @@ services:
         - REDIS_PASSWORD=password
         - REDIS_PORT=6379
 
+  rabbitmq:
+    image: rabbitmq:3.13.1-management
+    ports:
+      - "15672:15672"
+      - "61613:61613"
+      - "5672:5672"
+
 #  redis_test:
 #      image: redis:latest
 #      restart: always

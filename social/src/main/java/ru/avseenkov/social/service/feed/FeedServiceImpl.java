@@ -1,6 +1,7 @@
 package ru.avseenkov.social.service.feed;
 
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import ru.avseenkov.social.dto.PostDto;
 import ru.avseenkov.social.mapper.PostMapper;
@@ -23,6 +24,8 @@ public class FeedServiceImpl implements FeedService {
     private final PostRepository postRepository;
     private final FeedRepository feedRepository;
 
+    private final SimpMessagingTemplate template;
+
     @Override
     public List<PostDto> getFeed(Long userId, int offset, int limit) {
         List<Post> posts = cacheFeedRepository.getFeed(userId, offset, limit);
@@ -43,6 +46,8 @@ public class FeedServiceImpl implements FeedService {
         for (User friend : friends) {
             cacheFeedRepository.addPostInFeed(friend.getId(), post);
             feedRepository.addToFeed(friend.getId(), postId);
+
+            template.convertAndSendToUser(friend.getUsername(), "/queue/post", PostMapper.postDtoFromPost(post));
         }
     }
 }
