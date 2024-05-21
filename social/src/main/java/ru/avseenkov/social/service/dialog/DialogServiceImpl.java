@@ -1,6 +1,7 @@
 package ru.avseenkov.social.service.dialog;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.avseenkov.social.dto.DialogDto;
 import ru.avseenkov.social.dto.NewDialogDto;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
+@Primary
 public class DialogServiceImpl implements DialogService {
 
     private DialogRepository dialogRepository;
@@ -30,9 +32,9 @@ public class DialogServiceImpl implements DialogService {
 
     @Override
     public List<DialogDto> getDialogs(Long from, Long to) {
-        User userFrom = userRepository.getUserFromDb(from);
-        User userTo = userRepository.getUserFromDb(to);
+//        User userFrom = userRepository.getUserFromDb(from);
+//        User userTo = userRepository.getUserFromDb(to);
         List<Dialog> dialogs = dialogRepository.getDialogs(from, to);
-        return DialogMapper.mapToPostDto(dialogs, userFrom.getUsername(), userTo.getUsername());
+        return DialogMapper.mapToPostDto(dialogs, from.toString(), to.toString());
     }
 }

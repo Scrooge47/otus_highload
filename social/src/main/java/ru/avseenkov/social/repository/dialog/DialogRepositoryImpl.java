@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.avseenkov.social.model.Dialog;
+import ru.avseenkov.social.utils.Helper;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -21,7 +22,7 @@ public class DialogRepositoryImpl implements DialogRepository {
     public Dialog save(Long from, Long to, Dialog dialog) {
         String sql = "INSERT INTO dialogs (\"from\" , \"to\", text, key_id) VALUES(?, ?, ?, ?)";
 
-        String keyId = getKeyId(from, to);
+        String keyId = Helper.getKeyId(from, to);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con ->
@@ -41,13 +42,9 @@ public class DialogRepositoryImpl implements DialogRepository {
     @Override
     public List<Dialog> getDialogs(Long from, Long to) {
         String sql = "SELECT * FROM dialogs where key_id = ?";
-        String keyId = getKeyId(from, to);
+        String keyId = Helper.getKeyId(from, to);
         List<Dialog> dialogs = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Dialog.class), keyId).stream().toList();
         return dialogs;
     }
 
-    private String getKeyId(Long id1, Long id2) {
-        if (id1 > id2) return "" + id1 + id2;
-        return "" + id2 + id1;
-    }
 }

@@ -1,6 +1,7 @@
 package ru.avseenkov.social.service.post;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.avseenkov.social.dto.NewPostDto;
 import ru.avseenkov.social.dto.PostDto;
@@ -13,6 +14,7 @@ import ru.avseenkov.social.repository.user.UserRepository;
 
 @Service
 @AllArgsConstructor
+@Primary
 public class PostServiceImpl implements PostService {
     private UserRepository userRepository;
     private PostRepository postRepository;

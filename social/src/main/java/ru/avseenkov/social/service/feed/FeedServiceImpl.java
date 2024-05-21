@@ -47,7 +47,7 @@ public class FeedServiceImpl implements FeedService {
             cacheFeedRepository.addPostInFeed(friend.getId(), post);
             feedRepository.addToFeed(friend.getId(), postId);
 
-            template.convertAndSendToUser(friend.getUsername(), "/queue/post", PostMapper.postDtoFromPost(post));
+           template.convertAndSendToUser(friend.getUsername(), "/queue/post", PostMapper.postDtoFromPost(post));
         }
     }
 }

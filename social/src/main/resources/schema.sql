@@ -37,4 +37,6 @@ CREATE TABLE IF NOT EXISTS dialogs (
     created_at TIMESTAMP DEFAULT now()
 );
 
-SELECT create_distributed_table('dialogs', 'key_id');
+CREATE INDEX IF NOT EXISTS "key_id" ON dialogs ("key_id")
+
+--SELECT create_distributed_table('dialogs', 'key_id');
