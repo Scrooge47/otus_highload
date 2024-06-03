@@ -72,6 +72,14 @@ services:
       - DATABASE_HOST_02=database_02
       - REDIS_HOST=redis
 
+  dialogs:
+    image: dialogs:latest
+    restart: on-failure
+    build:
+      context: ./dialogs
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
   redis-server:
       image: redis:latest
       container_name: redis
@@ -100,6 +108,19 @@ services:
       - "3301:3301"
     volumes:
       - ./lua/dialog.lua:/opt/tarantool/app.lua
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    command: ["start-dev"]
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+
+#    networks:
+#      backend:
+#          - aliases:
+#              - "keycloak"
 #  redis_test:
 #      image: redis:latest
 #      restart: always
@@ -123,5 +144,9 @@ volumes:
   db-data-02:
   db-data-03:
   healthcheck-volume:
+
+networks:
+  elastic:
+
 
 

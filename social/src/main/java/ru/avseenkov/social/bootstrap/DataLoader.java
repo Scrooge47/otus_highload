@@ -1,17 +1,8 @@
 package ru.avseenkov.social.bootstrap;
 
-import com.github.javafaker.Faker;
-import io.tarantool.driver.api.TarantoolClient;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.avseenkov.social.utils.Helper;
-
-import java.util.Locale;
 
 
 @Component
@@ -19,7 +10,6 @@ import java.util.Locale;
 @AllArgsConstructor
 public class DataLoader {
 
-    private final TarantoolClient client;
 
 //    @Bean
 //    public CommandLineRunner loadDataUser(@Qualifier("base01JdbcTemplate") JdbcTemplate jdbcTemplate) {
@@ -86,27 +76,5 @@ public class DataLoader {
 //            }
 //        };
 //    }
-//
-//    @Bean
-//    public CommandLineRunner loadDataDialogTarantool(@Qualifier("base01JdbcTemplate") JdbcTemplate jdbcTemplate) {
-//        return args -> {
-//            Faker faker = new Faker(new Locale("ru-RU"));
-//
-//            for (int i = 1; i < 100; i++) {
-//
-//                for (int j = 1; j < 100; j++) {
-//
-//                    String keyId = Helper.getKeyId((long) i, (long) j);
-//
-//                    for (int k = 1; k < 1000; k++) {
-//
-//                        String text = faker.lorem().paragraph();
-//
-//                        client.call("addDialog", i, j, text, keyId);
-//                    }
-//
-//                }
-//            }
-//        };
-//    }
+
 }

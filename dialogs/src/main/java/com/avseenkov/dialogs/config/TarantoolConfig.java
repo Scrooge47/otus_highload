@@ -1,4 +1,4 @@
-package ru.avseenkov.social.config;
+package com.avseenkov.dialogs.config;
 
 
 import io.tarantool.driver.api.TarantoolClient;
